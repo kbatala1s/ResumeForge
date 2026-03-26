@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  resumeforge:
+    build: .
+    container_name: resumeforge
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: development
+      SECRET_KEY: dev-secret-change-in-production
+      DATABASE_URL: sqlite:////app/instance/resumeforge.db
+    volumes:
+      - ./:/app
+      - resumeforge-data:/app/instance
+      - resumeforge-uploads:/app/uploads
+    command: python app.py
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: resumeforge-db
+    environment:
+      POSTGRES_USER: resumeforge
+      POSTGRES_PASSWORD: resumeforge
+      POSTGRES_DB: resumeforge
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db-data:
+  resumeforge-data:
+  resumeforge-uploads:
