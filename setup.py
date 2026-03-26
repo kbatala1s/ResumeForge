@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 """
-ResumeForge — Quick Setup Script
-Run this once to initialize the database and verify dependencies.
+ResumeForge — Quick Setup Script (also supports pip install -e . via setuptools metadata)
 """
+from setuptools import setup, find_packages
 import subprocess
 import sys
 import os
+
+# Make this project installable in CI and local editable installs
+if any(cmd in sys.argv for cmd in ["install", "develop", "sdist", "bdist_wheel", "egg_info", "check"]):
+    setup(
+        name="resumeforge",
+        version="0.1.0",
+        packages=find_packages(include=["services", "services.*"]),
+        include_package_data=True,
+    )
+    sys.exit(0)
 
 def run(cmd, desc):
     print(f"  {desc}...")
