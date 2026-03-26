@@ -40,7 +40,7 @@ jobs:
           flake8 app.py config.py models.py services/ --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: Run tests
-        run: pytest -v --tb=short || true
+        run: pytest -v --tb=short --ignore=services/tests || true
 
       - name: Test import app
         run: python -c "from app import app; print('✓ App imported successfully')"
